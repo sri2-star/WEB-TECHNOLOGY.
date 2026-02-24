@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive World Map Website</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        header {
+            background-color: #1e90ff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #1e90ff;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        .highlight {
+            color: darkblue;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background-color: #eef5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .search-box {
+            margin-bottom: 10px;
+        }
+
+        .search-box input {
+            padding: 8px;
+            width: 250px;
+        }
+
+        .search-box button {
+            padding: 8px 15px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .frame-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .frame {
+            width: 50%;
+            height: 300px;
+            border: 2px solid #1e90ff;
+        }
+
+        footer {
+            background-color: #1e90ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 Interactive World Map Portal</h1>
+    <p>Explore countries, maps, and useful resources</p>
+</header>
+
+<nav>
+    <a href="#map">Map</a>
+    <a href="#frames">Frames</a>
+    <a href="https://www.wikipedia.org" target="_blank">Wikipedia</a>
+</nav>
+
+<!-- GOOGLE MAP WITH SEARCH -->
+<section id="map">
+    <h2 class="highlight">Google Map with Search Bar</h2>
+    <center>
+
+    <div class="search-box">
+        <input type="text" id="placeInput" placeholder="Enter place name">
+        <button onclick="searchPlace()">Search</button>
+    </div>
+    </center>
+
+    <iframe
+        id="googleMap"
+        src="https://www.google.com/maps?q=India&output=embed"
+        width="100%"
+        height="350"
+        style="border:2px solid #1e90ff; border-radius:10px;"
+        loading="lazy">
+    </iframe>
+
+    <div class="info-box">
+        <p>
+            Users can search for any location using the search bar.
+        </p>
+    </div>
+</section>
+
+
+<script>
+    // Google Map Search
+    function searchPlace() {
+        const place = document.getElementById("placeInput").value;
+        if (place !== "") {
+            document.getElementById("googleMap").src =
+                "https://www.google.com/maps?q=" + place + "&output=embed";
+        }
+    }
+
+    // Image Map Click
+    const map = document.getElementById("worldMap");
+    const info = document.getElementById("mapInfo");
+
+    map.addEventListener("click", function (event) {
+        const rect = map.getBoundingClientRect();
+        const x = Math.floor(event.clientX - rect.left);
+        const y = Math.floor(event.clientY - rect.top);
+
+        let placeInfo = "This region has important geographical features.";
+
+        if (x > 450 && x < 550 && y > 170 && y < 260) {
+            placeInfo = "India 🇮🇳 – Known for culture, heritage, and IT industry.";
+        } else if (x > 600 && x < 700 && y > 260 && y < 350) {
+            placeInfo = "Australia 🇦🇺 – Famous for wildlife and the Great Barrier Reef.";
+        }
+
+        info.innerHTML = `
+            <p><strong>Clicked Position:</strong> X = ${x}, Y = ${y}</p>
+            <p><strong>Information:</strong> ${placeInfo}</p>
+        `;
+    });
+</script>
+
+<!-- FRAMES -->
+<section id="frames">
+    <h2 class="highlight">Frames</h2>
+
+    <div class="frame-container">
+        <iframe src="https://www.britannica.com" class="frame"></iframe>
+        <iframe src="https://www.nationalgeographic.com" class="frame"></iframe>
+    </div>
+
+    <div class="info-box">
+       <center>
+        <b>Learning begins with a click and grows with curiosity!!!</b>
+       </center>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Interactive Map Website | HTML, CSS & JavaScript</p>
+</footer>
+
+</body>
+</html>
