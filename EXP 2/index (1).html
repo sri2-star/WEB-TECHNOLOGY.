@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced Registration Form</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(120deg, #1d2671, #c33764);
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 430px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        color: white;
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+
+    textarea {
+        resize: none;
+        height: 70px;
+    }
+
+    small {
+        color: #ffdede;
+        font-size: 12px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        background: linear-gradient(to right, #ff512f, #dd2476);
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(255,255,255,0.4);
+    }
+
+    .error {
+        color: #ffb3b3;
+        text-align: center;
+        font-size: 14px;
+    }
+</style>
+
+<script>
+function registerUser() {
+
+    let fname = document.getElementById("fname").value.trim();
+    let lname = document.getElementById("lname").value.trim();
+    let password = document.getElementById("password").value;
+    let email = document.getElementById("email").value;
+    let mobile = document.getElementById("mobile").value;
+    let address = document.getElementById("address").value.trim();
+    let msg = document.getElementById("msg");
+
+    let nameRegex = /^[A-Za-z]+$/;
+    let emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
+    let mobileRegex = /^[0-9]{10}$/;
+
+    msg.className = "error";
+
+    if (!nameRegex.test(fname) || fname.length < 6) {
+        msg.innerHTML = "First Name must contain alphabets and minimum 6 characters";
+        return false;
+    }
+
+    if (lname === "") {
+        msg.innerHTML = "Last Name cannot be empty";
+        return false;
+    }
+
+    if (password.length < 6) {
+        msg.innerHTML = "Password must be at least 6 characters";
+        return false;
+    }
+
+    if (!emailRegex.test(email)) {
+        msg.innerHTML = "Email must follow format: name@domain.com";
+        return false;
+    }
+
+    if (!mobileRegex.test(mobile)) {
+        msg.innerHTML = "Mobile number must contain exactly 10 digits";
+        return false;
+    }
+
+    if (address === "") {
+        msg.innerHTML = "Address cannot be empty";
+        return false;
+    }
+
+    let user = {
+        firstName: fname,
+        lastName: lname,
+        password: password,
+        email: email,
+        mobile: mobile,
+        address: address
+    };
+
+ 
+    localStorage.setItem("registeredUser", JSON.stringify(user));
+
+    
+    alert("🎉 Registration Successful!\nYour information has been saved.");
+
+   
+    document.getElementById("form").reset();
+    msg.innerHTML = "";
+
+    return false;
+}
+</script>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>✨ Create Account</h2>
+
+    <form id="form" onsubmit="return registerUser()">
+
+        <div class="input-group">
+            <input type="text" id="fname" placeholder="First Name">
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="lname" placeholder="Last Name">
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Password">
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="email" placeholder="Email (name@domain.com)">
+            <small>Format: example@gmail.com</small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="mobile" placeholder="Mobile Number">
+        </div>
+
+        <div class="input-group">
+            <textarea id="address" placeholder="Address"></textarea>
+        </div>
+
+        <div id="msg"></div><br>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+
