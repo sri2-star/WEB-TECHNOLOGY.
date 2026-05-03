@@ -1,0 +1,580 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#7C3AED;--brand2:#6D28D9;--brand-light:#EDE9FE;--brand-mid:#8B5CF6;
+  --accent:#F59E0B;--accent-light:#FEF3C7;
+  --teal:#0D9488;--teal-light:#CCFBF1;
+  --coral:#F43F5E;--coral-light:#FFE4E6;
+  --sky:#0EA5E9;--sky-light:#E0F2FE;
+  --page-bg:#F5F3FF;
+  --card-bg:#FFFFFF;
+  --text1:#1E1B4B;--text2:#6B7280;--text3:#9CA3AF;
+  --border:#E5E7EB;
+}
+body{font-family:system-ui,sans-serif;background:var(--page-bg);color:var(--text1)}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+.hero-nav{background:var(--brand);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.brand-wrap{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-name{color:#fff;font-size:17px;font-weight:700;letter-spacing:-.3px}
+.nav-right{display:flex;align-items:center;gap:8px}
+.step-pip{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3)}
+.step-pip.active{background:#fff}
+.step-pip.done{background:#A78BFA}
+.user-chip{background:rgba(255,255,255,.2);color:#fff;font-size:12px;padding:4px 10px;border-radius:20px}
+.nav-btn{background:rgba(255,255,255,.15);color:#fff;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3);cursor:pointer}
+.nav-btn:hover{background:rgba(255,255,255,.25)}
+
+.auth-bg{background:linear-gradient(135deg,#7C3AED 0%,#4F46E5 50%,#0EA5E9 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+.auth-card{background:#fff;border-radius:20px;padding:2rem;max-width:420px;width:100%}
+.auth-logo{text-align:center;margin-bottom:1.5rem}
+.auth-logo .big-icon{font-size:40px;background:var(--brand-light);width:70px;height:70px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.auth-logo h1{font-size:22px;font-weight:700;color:var(--brand2)}
+.auth-logo p{font-size:13px;color:var(--text2);margin-top:3px}
+.tab-row{display:flex;background:#F3F4F6;border-radius:10px;padding:4px;margin-bottom:1.25rem}
+.atab{flex:1;padding:7px;text-align:center;border-radius:8px;font-size:14px;cursor:pointer;color:var(--text2)}
+.atab.active{background:#fff;color:var(--brand2);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+label{font-size:12px;color:var(--text2);font-weight:500;display:block;margin-bottom:4px;margin-top:10px}
+input,select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text1);background:#fff;outline:none;transition:border-color .15s}
+input:focus,select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.btn-primary{width:100%;padding:12px;background:var(--brand);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:1rem;transition:background .15s}
+.btn-primary:hover{background:var(--brand2)}
+.btn-outline{padding:8px 16px;background:#fff;color:var(--brand);border:1.5px solid var(--brand);border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-outline:hover{background:var(--brand-light)}
+.info-box{background:var(--sky-light);color:#075985;border-radius:10px;padding:10px 14px;font-size:12px;margin:10px 0;border:1px solid #BAE6FD}
+
+.search-hero{background:linear-gradient(135deg,#7C3AED,#4F46E5);padding:2rem 1.25rem 3rem;text-align:center}
+.search-hero h2{color:#fff;font-size:22px;font-weight:700;margin-bottom:6px}
+.search-hero p{color:#C4B5FD;font-size:14px}
+.search-form-float{background:#fff;border-radius:20px;padding:1.5rem;max-width:700px;margin:-1.5rem auto 0;position:relative;z-index:5;border:1px solid #E9D5FF}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.section-label{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;margin-top:1rem}
+hr.div{border:none;border-top:1.5px dashed #E9D5FF;margin:1.25rem 0}
+.search-btn{background:linear-gradient(90deg,var(--brand),var(--sky));color:#fff;border:none;border-radius:12px;padding:13px 28px;font-size:15px;font-weight:600;cursor:pointer;margin-top:1.25rem;transition:opacity .15s}
+.search-btn:hover{opacity:.9}
+
+.list-wrap{max-width:750px;margin:0 auto;padding:1rem 1rem 2rem}
+.list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
+.route-badge{background:var(--brand-light);color:var(--brand2);font-size:13px;font-weight:600;padding:5px 14px;border-radius:20px}
+.bus-card{background:#fff;border-radius:16px;border:1.5px solid var(--border);padding:1.25rem;margin-bottom:.875rem;cursor:pointer;transition:border-color .15s,transform .1s}
+.bus-card:hover{border-color:var(--brand);transform:translateY(-1px)}
+.bus-card.sel{border-color:var(--brand);border-width:2px}
+.bus-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px}
+.bus-operator{font-size:16px;font-weight:700;color:var(--text1)}
+.bus-type{font-size:12px;color:var(--text2);margin-top:2px}
+.fare{font-size:22px;font-weight:700;color:var(--brand)}
+.fare-sub{font-size:11px;color:var(--text2)}
+.badge-row{display:flex;flex-wrap:wrap;gap:5px;margin:.75rem 0}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.b-purple{background:#EDE9FE;color:#5B21B6}
+.b-teal{background:#CCFBF1;color:#0F766E}
+.b-amber{background:#FEF3C7;color:#B45309}
+.b-red{background:#FFE4E6;color:#BE123C}
+.b-sky{background:#E0F2FE;color:#0369A1}
+.b-gray{background:#F3F4F6;color:#4B5563}
+.time-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;flex-wrap:wrap;gap:6px}
+.time-big{font-size:16px;font-weight:700;color:var(--text1)}
+.time-arrow{color:var(--text3);flex:1;text-align:center;border-top:1.5px dashed var(--border);margin:0 10px;position:relative;top:1px}
+.amenity{font-size:11px;background:#F9FAFB;border:1px solid var(--border);border-radius:20px;padding:2px 8px;color:var(--text2)}
+
+.seat-wrap{max-width:850px;margin:0 auto;padding:1rem 1rem 2rem}
+.seat-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+.panel{background:#fff;border-radius:16px;border:1.5px solid var(--border);padding:1.25rem}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)}
+.bus-frame{background:#F9F5FF;border-radius:12px;padding:1rem;border:1.5px solid #DDD6FE}
+.driver-bar{background:var(--brand);color:#fff;border-radius:8px;padding:6px;text-align:center;font-size:12px;font-weight:600;margin-bottom:10px}
+.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.seat{width:100%;aspect-ratio:1;border-radius:7px;border:1.5px solid;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;transition:all .1s}
+.s-av{background:#CCFBF1;border-color:#2DD4BF;color:#0F766E}
+.s-bk{background:#F3F4F6;border-color:#D1D5DB;color:#9CA3AF;cursor:not-allowed}
+.s-wm{background:#FFE4E6;border-color:#FDA4AF;color:#BE123C;cursor:not-allowed}
+.s-sl{background:var(--brand);border-color:var(--brand2);color:#fff}
+.col-hdr{text-align:center;font-size:10px;color:var(--text3);padding:2px 0}
+.summary-card{background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border:1.5px solid #DDD6FE;border-radius:16px;padding:1.25rem}
+.sum-row{display:flex;justify-content:space-between;padding:5px 0;font-size:14px;color:var(--text2)}
+.sum-total{font-size:17px;font-weight:700;color:var(--brand);border-top:2px solid #DDD6FE;padding-top:10px;margin-top:6px}
+.map-box{background:linear-gradient(135deg,#ECFDF5,#E0F2FE);border-radius:12px;border:1.5px solid #A7F3D0;padding:1rem;margin-top:1rem}
+.btn-book{width:100%;padding:13px;background:linear-gradient(90deg,var(--brand),#4F46E5);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:1rem;transition:opacity .15s}
+.btn-book:hover{opacity:.9}
+
+.pay-wrap{max-width:850px;margin:0 auto;padding:1rem 1rem 2rem}
+.pm-option{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:.875rem 1rem;margin-bottom:.625rem;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s}
+.pm-option:hover{border-color:var(--brand)}
+.pm-option.sel{border-color:var(--brand);background:#F5F3FF}
+.pm-icon-box{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pm-name{font-size:14px;font-weight:600;color:var(--text1)}
+.pm-sub{font-size:12px;color:var(--text2)}
+.pax-block{background:#F9FAFB;border-radius:12px;padding:.875rem;margin-bottom:.75rem;border:1px solid var(--border)}
+.pax-title{font-size:13px;font-weight:700;color:var(--brand2);margin-bottom:.5rem}
+.pay-summary{background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border-radius:16px;border:1.5px solid #DDD6FE;padding:1.25rem}
+.confirm-wrap{max-width:500px;margin:3rem auto;padding:1rem;text-align:center}
+.tick-circle{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--teal));display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 1.25rem}
+.ticket-card{background:#fff;border-radius:20px;border:2px solid var(--brand-light);padding:1.5rem;text-align:left;margin-bottom:1.25rem;position:relative;overflow:hidden}
+.ticket-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--brand),var(--sky))}
+.ticket-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;border-bottom:1px dashed #E9D5FF}
+.ticket-row:last-child{border:none;font-size:16px;font-weight:700;color:var(--brand);padding-top:10px}
+@media(max-width:560px){.form-2col,.form-3col,.two-col{grid-template-columns:1fr}}
+</style>
+
+<div id="app">
+
+<div class="hero-nav">
+  <div class="brand-wrap">
+    <div class="brand-icon">🚌</div>
+    <span class="brand-name">BusGo India</span>
+  </div>
+  <div class="nav-right">
+    <div id="nav-pips" style="display:flex;gap:4px">
+      <div class="step-pip" id="p0"></div>
+      <div class="step-pip" id="p1"></div>
+      <div class="step-pip" id="p2"></div>
+      <div class="step-pip" id="p3"></div>
+      <div class="step-pip" id="p4"></div>
+    </div>
+    <span class="user-chip" id="uchip" style="display:none"></span>
+    <button class="nav-btn" id="lbtn" style="display:none" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- AUTH PAGE -->
+<div class="page active" id="pg-auth">
+  <div class="auth-bg">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="big-icon">🚌</div>
+        <h1>BusGo India</h1>
+        <p>Your journey, seamlessly booked</p>
+      </div>
+      <div class="tab-row">
+        <div class="atab active" onclick="sw('login')">Login</div>
+        <div class="atab" onclick="sw('register')">Register</div>
+      </div>
+      <div id="lf">
+        <label>Email address</label>
+        <input type="email" id="le" value="demo@busgo.in" placeholder="you@email.com">
+        <label>Password</label>
+        <input type="password" id="lp" value="demo123" placeholder="••••••••">
+        <div class="info-box">Demo credentials are pre-filled — just tap Login!</div>
+        <button class="btn-primary" onclick="doLogin()">Login →</button>
+        <p style="text-align:center;font-size:12px;color:var(--text2);margin-top:.75rem">Forgot password? <span style="color:var(--brand);cursor:pointer;font-weight:500">Reset here</span></p>
+      </div>
+      <div id="rf" style="display:none">
+        <div class="form-2col">
+          <div><label>First name</label><input id="rfn" placeholder="Ravi"></div>
+          <div><label>Last name</label><input id="rln" placeholder="Kumar"></div>
+        </div>
+        <label>Email address</label><input id="re" placeholder="you@email.com">
+        <label>Mobile</label><input id="rph" placeholder="+91 98765 43210">
+        <label>Password</label><input type="password" id="rp" placeholder="Min 8 characters">
+        <label>Confirm password</label><input type="password" id="rp2" placeholder="Repeat password">
+        <button class="btn-primary" onclick="doReg()">Create account →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH PAGE -->
+<div class="page" id="pg-search">
+  <div class="search-hero">
+    <h2>Find your perfect bus</h2>
+    <p>Travel smarter across India</p>
+  </div>
+  <div style="padding:0 1rem 2rem">
+    <div class="search-form-float">
+      <div class="form-2col">
+        <div><label>From</label>
+          <select id="src">
+            <option>Chennai</option><option>Bangalore</option><option>Mumbai</option>
+            <option>Delhi</option><option>Hyderabad</option><option>Coimbatore</option>
+            <option>Madurai</option><option>Pune</option>
+          </select>
+        </div>
+        <div><label>To</label>
+          <select id="dst">
+            <option>Hyderabad</option><option>Chennai</option><option>Bangalore</option>
+            <option>Mumbai</option><option>Delhi</option><option>Coimbatore</option>
+            <option>Madurai</option><option>Pune</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-2col">
+        <div><label>Date of journey</label><input type="date" id="jdate"></div>
+        <div><label>Passengers</label>
+          <select id="pax">
+            <option>1 Passenger</option><option>2 Passengers</option>
+            <option>3 Passengers</option><option>4 Passengers</option>
+          </select>
+        </div>
+      </div>
+      <hr class="div">
+      <div class="section-label">Filter buses</div>
+      <div class="form-3col">
+        <div><label>AC preference</label>
+          <select id="fac"><option value="">All</option><option>AC</option><option>Non-AC</option></select>
+        </div>
+        <div><label>Seat type</label>
+          <select id="fst"><option value="">All</option><option>Sleeper</option><option>Semi-Sleeper</option><option>Seater</option></select>
+        </div>
+        <div><label>Departure time</label>
+          <select id="fdep"><option value="">Any time</option><option>Morning (6–12)</option><option>Afternoon (12–18)</option><option>Night (18–6)</option></select>
+        </div>
+      </div>
+      <button class="search-btn" onclick="doSearch()">Search Buses →</button>
+    </div>
+  </div>
+</div>
+
+<!-- BUS LIST PAGE -->
+<div class="page" id="pg-list">
+  <div class="list-wrap">
+    <div class="list-header">
+      <div>
+        <div id="rt" style="font-size:20px;font-weight:700;color:var(--text1)">Chennai → Hyderabad</div>
+        <div id="dl" style="font-size:13px;color:var(--text2);margin-top:2px"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="route-badge" id="cnt-badge">5 buses found</span>
+        <button class="btn-outline" onclick="goTo(1)">← Modify</button>
+      </div>
+    </div>
+    <div id="blist"></div>
+  </div>
+</div>
+
+<!-- SEAT PAGE -->
+<div class="page" id="pg-seats">
+  <div class="seat-wrap">
+    <div class="seat-header">
+      <button class="btn-outline" onclick="goTo(2)">←</button>
+      <div>
+        <div id="bnseat" style="font-size:17px;font-weight:700;color:var(--text1)"></div>
+        <div id="srte" style="font-size:12px;color:var(--text2)"></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="legend">
+          <div class="leg-item"><div style="width:18px;height:18px;border-radius:4px;background:#CCFBF1;border:1.5px solid #2DD4BF"></div>Available</div>
+          <div class="leg-item"><div style="width:18px;height:18px;border-radius:4px;background:#F3F4F6;border:1.5px solid #D1D5DB"></div>Booked</div>
+          <div class="leg-item"><div style="width:18px;height:18px;border-radius:4px;background:#FFE4E6;border:1.5px solid #FDA4AF"></div>Women only</div>
+          <div class="leg-item"><div style="width:18px;height:18px;border-radius:4px;background:var(--brand);border:1.5px solid var(--brand2)"></div>Selected</div>
+        </div>
+        <div class="bus-frame">
+          <div class="driver-bar">🚌 Driver / Engine</div>
+          <div id="slayout"></div>
+        </div>
+      </div>
+      <div>
+        <div class="summary-card">
+          <div style="font-size:15px;font-weight:700;color:var(--brand2);margin-bottom:.75rem">Booking summary</div>
+          <div id="sinfo" style="font-size:13px;color:var(--text2);margin-bottom:.5rem">No seats selected yet</div>
+          <div class="sum-row"><span>Fare per seat</span><span id="sprice">₹0</span></div>
+          <div class="sum-row"><span>Seats selected</span><span id="scnt">0</span></div>
+          <div class="sum-row"><span>Convenience fee</span><span>₹40</span></div>
+          <div class="sum-row sum-total"><span>Total</span><span id="stotal">₹40</span></div>
+          <button class="btn-book" onclick="toPay()">Proceed to payment →</button>
+        </div>
+        <div class="map-box" id="mbox">
+          <div id="msvg"></div>
+          <div id="mdist" style="font-size:12px;color:#0F766E;font-weight:500;margin-top:.5rem;text-align:center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT PAGE -->
+<div class="page" id="pg-pay">
+  <div class="pay-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+      <button class="btn-outline" onclick="goTo(3)">←</button>
+      <div style="font-size:20px;font-weight:700;color:var(--text1)">Payment</div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="panel" style="margin-bottom:1rem">
+          <div style="font-size:15px;font-weight:700;color:var(--brand2);margin-bottom:.875rem">Passenger details</div>
+          <div id="paxforms"></div>
+        </div>
+        <div class="panel">
+          <div style="font-size:15px;font-weight:700;color:var(--brand2);margin-bottom:.875rem">Payment method</div>
+          <div class="pm-option sel" onclick="selPM(this,'upi')">
+            <div class="pm-icon-box" style="background:#CCFBF1">📱</div>
+            <div><div class="pm-name">UPI</div><div class="pm-sub">Google Pay, PhonePe, BHIM</div></div>
+          </div>
+          <div class="pm-option" onclick="selPM(this,'card')">
+            <div class="pm-icon-box" style="background:#E0F2FE">💳</div>
+            <div><div class="pm-name">Credit / Debit card</div><div class="pm-sub">Visa, Mastercard, RuPay</div></div>
+          </div>
+          <div class="pm-option" onclick="selPM(this,'nb')">
+            <div class="pm-icon-box" style="background:#FEF3C7">🏦</div>
+            <div><div class="pm-name">Net banking</div><div class="pm-sub">All major banks</div></div>
+          </div>
+          <div class="pm-option" onclick="selPM(this,'wlt')">
+            <div class="pm-icon-box" style="background:#FFE4E6">👛</div>
+            <div><div class="pm-name">Wallet</div><div class="pm-sub">Paytm, Amazon Pay</div></div>
+          </div>
+          <div id="pmdet" style="margin-top:1rem"></div>
+        </div>
+      </div>
+      <div>
+        <div class="pay-summary">
+          <div style="font-size:15px;font-weight:700;color:var(--brand2);margin-bottom:.75rem">Order summary</div>
+          <div id="psum"></div>
+          <button class="btn-book" style="margin-top:1rem" onclick="confirm()">Confirm & Pay ₹<span id="pbtn">0</span></button>
+          <p style="font-size:11px;color:var(--text2);text-align:center;margin-top:.5rem">E-ticket will be sent to your email</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION PAGE -->
+<div class="page" id="pg-ok">
+  <div class="confirm-wrap">
+    <div class="tick-circle">✓</div>
+    <div style="font-size:24px;font-weight:700;color:var(--text1);margin-bottom:.5rem">Booking confirmed!</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">Your e-ticket has been sent to your email address.</p>
+    <div class="ticket-card">
+      <div id="tdet"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-primary" style="width:auto;padding:11px 24px;margin:0" onclick="goTo(1)">Book another trip</button>
+      <button class="btn-outline" onclick="goTo(1)">Back to search</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const S={user:null,src:'Chennai',dst:'Hyderabad',date:'',pax:1,bus:null,seats:[],pm:'upi'};
+const buses=[
+  {id:1,name:'Royal Travels',type:'AC Sleeper',dep:'21:00',arr:'09:00+1',dur:'12h',price:1100,avail:14,seats:40,rating:4.3,tags:['WiFi','Blanket','Charging'],ac:true,sl:true},
+  {id:2,name:'KPN Travels',type:'AC Semi-Sleeper',dep:'20:30',arr:'08:30+1',dur:'12h',price:850,avail:22,seats:40,rating:4.1,tags:['Charging','Water'],ac:true,sl:false},
+  {id:3,name:'Orange Travels',type:'Non-AC Sleeper',dep:'19:00',arr:'07:00+1',dur:'12h',price:650,avail:8,seats:36,rating:3.9,tags:['Blanket'],ac:false,sl:true},
+  {id:4,name:'VRL Travels',type:'AC Seater',dep:'07:00',arr:'17:00',dur:'10h',price:750,avail:30,seats:45,rating:4.4,tags:['WiFi','Charging','Snacks'],ac:true,sl:false},
+  {id:5,name:'SRS Travels',type:'Non-AC Seater',dep:'06:00',arr:'16:30',dur:'10.5h',price:480,avail:5,seats:45,rating:3.7,tags:['Water'],ac:false,sl:false},
+];
+const BOOKED=[2,5,7,9,12,16,19,23,27];
+const WOMEN=[1,3,4,6];
+
+function toast(msg,bg='#7C3AED'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:10px 20px;border-radius:12px;font-size:14px;z-index:999;font-weight:500;pointer-events:none`;
+  t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+
+function goTo(n){
+  const ids=['pg-auth','pg-search','pg-list','pg-seats','pg-pay','pg-ok'];
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(ids[n]).classList.add('active');
+  for(let i=0;i<5;i++){
+    const d=document.getElementById('p'+i);
+    d.className='step-pip'+(i===n-1?' active':i<n-1?' done':'');
+  }
+  window.scrollTo(0,0);
+}
+
+function sw(t){
+  document.getElementById('lf').style.display=t==='login'?'block':'none';
+  document.getElementById('rf').style.display=t==='register'?'block':'none';
+  document.querySelectorAll('.atab').forEach((e,i)=>e.classList.toggle('active',(i===0&&t==='login')||(i===1&&t==='register')));
+}
+
+function doLogin(){
+  const e=document.getElementById('le').value,p=document.getElementById('lp').value;
+  if(!e||!p){toast('Please enter credentials','#F43F5E');return;}
+  S.user={name:e.split('@')[0],email:e};
+  document.getElementById('uchip').textContent=S.user.name;
+  document.getElementById('uchip').style.display='inline';
+  document.getElementById('lbtn').style.display='inline-block';
+  const d=new Date();d.setDate(d.getDate()+3);
+  document.getElementById('jdate').value=d.toISOString().split('T')[0];
+  toast('Welcome back, '+S.user.name+'! 🎉');goTo(1);
+}
+
+function doReg(){
+  const fn=document.getElementById('rfn').value,e=document.getElementById('re').value,p=document.getElementById('rp').value,p2=document.getElementById('rp2').value;
+  if(!fn||!e||!p){toast('Please fill all fields','#F43F5E');return;}
+  if(p!==p2){toast('Passwords do not match','#F43F5E');return;}
+  S.user={name:fn,email:e};
+  document.getElementById('uchip').textContent=fn;
+  document.getElementById('uchip').style.display='inline';
+  document.getElementById('lbtn').style.display='inline-block';
+  const d=new Date();d.setDate(d.getDate()+3);
+  document.getElementById('jdate').value=d.toISOString().split('T')[0];
+  toast('Welcome to BusGo, '+fn+'! 🚌');goTo(1);
+}
+
+function logout(){S.user=null;document.getElementById('uchip').style.display='none';document.getElementById('lbtn').style.display='none';goTo(0);}
+
+function doSearch(){
+  const s=document.getElementById('src').value,d=document.getElementById('dst').value,dt=document.getElementById('jdate').value;
+  if(s===d){toast('Source and destination must differ','#F43F5E');return;}
+  if(!dt){toast('Please select a date','#F43F5E');return;}
+  S.src=s;S.dst=d;S.date=dt;S.pax=parseInt(document.getElementById('pax').value);
+  const ac=document.getElementById('fac').value,st=document.getElementById('fst').value;
+  let fl=buses.filter(b=>{
+    if(ac==='AC'&&!b.ac)return false;
+    if(ac==='Non-AC'&&b.ac)return false;
+    if(st==='Sleeper'&&!b.sl)return false;
+    if(st==='Seater'&&b.sl)return false;
+    return true;
+  });
+  document.getElementById('rt').textContent=s+' → '+d;
+  document.getElementById('cnt-badge').textContent=fl.length+' bus'+(fl.length!==1?'es':'')+' found';
+  const wd=new Date(dt);
+  document.getElementById('dl').textContent=wd.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  renderList(fl);goTo(2);
+}
+
+function renderList(list){
+  const c=document.getElementById('blist');
+  if(!list.length){c.innerHTML='<div style="text-align:center;padding:2rem;color:var(--text2)">No buses found. Try changing filters.</div>';return;}
+  c.innerHTML=list.map(b=>`
+    <div class="bus-card" onclick="pickBus(${b.id})">
+      <div class="bus-top">
+        <div><div class="bus-operator">${b.name}</div><div class="bus-type">${b.type}</div></div>
+        <div style="text-align:right"><div class="fare">₹${b.price}</div><div class="fare-sub">per person</div></div>
+      </div>
+      <div class="badge-row">
+        <span class="badge ${b.ac?'b-sky':'b-amber'}">${b.ac?'AC':'Non-AC'}</span>
+        <span class="badge ${b.sl?'b-teal':'b-purple'}">${b.sl?'Sleeper':'Seater'}</span>
+        <span class="badge ${b.avail<=8?'b-red':b.avail<=15?'b-amber':'b-teal'}">${b.avail} seats left</span>
+        <span class="badge b-gray">⭐ ${b.rating}</span>
+      </div>
+      <div class="time-row">
+        <span><span class="time-big">${b.dep}</span> <span style="font-size:12px;color:var(--text2)">${S.src}</span></span>
+        <span class="time-arrow">——— ${b.dur} ———</span>
+        <span style="text-align:right"><span class="time-big">${b.arr}</span> <span style="font-size:12px;color:var(--text2)">${S.dst}</span></span>
+      </div>
+      <div style="margin-top:.625rem;display:flex;flex-wrap:wrap;gap:5px">${b.tags.map(t=>`<span class="amenity">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function pickBus(id){
+  S.bus=buses.find(b=>b.id===id);S.seats=[];
+  document.getElementById('bnseat').textContent=S.bus.name+' · '+S.bus.type;
+  document.getElementById('srte').textContent=S.src+' → '+S.dst+' | '+S.date;
+  renderSeats();renderMap();goTo(3);
+}
+
+function renderSeats(){
+  const b=S.bus,rows=Math.ceil(b.seats/4);
+  let h=`<div class="seat-grid">
+    <div class="col-hdr">L1</div><div class="col-hdr">L2</div><div class="col-hdr">R1</div><div class="col-hdr">R2</div>`;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<4;c++){
+      const n=r*4+c+1;
+      if(n>b.seats){h+=`<div></div>`;continue;}
+      let cls='s-av',lbl=n;
+      if(BOOKED.includes(n)){cls='s-bk';}
+      else if(WOMEN.includes(n)){cls='s-wm';lbl='♀';}
+      h+=`<div class="seat ${cls}" id="st-${n}" onclick="togSeat(${n},'${cls}')">${lbl}</div>`;
+    }
+  }
+  h+=`</div>`;
+  document.getElementById('slayout').innerHTML=h;
+  updSum();
+}
+
+function togSeat(n,cls){
+  if(cls==='s-bk'||cls==='s-wm'){toast('Seat not available','#F43F5E');return;}
+  const el=document.getElementById('st-'+n),idx=S.seats.indexOf(n);
+  if(idx>-1){S.seats.splice(idx,1);el.className='seat s-av';el.textContent=n;}
+  else{
+    if(S.seats.length>=S.pax){toast('Max '+S.pax+' seat(s) for this booking','#F59E0B');return;}
+    S.seats.push(n);el.className='seat s-sl';el.textContent=n;
+  }
+  updSum();
+}
+
+function updSum(){
+  const b=S.bus,cnt=S.seats.length,tot=b.price*cnt+40;
+  document.getElementById('sinfo').textContent=cnt?'Selected: '+S.seats.join(', '):'No seats selected yet';
+  document.getElementById('sprice').textContent='₹'+b.price;
+  document.getElementById('scnt').textContent=cnt;
+  document.getElementById('stotal').textContent='₹'+tot;
+}
+
+function renderMap(){
+  const routes={'Chennai-Hyderabad':{d:'694 km',t:'12h',p:'M30,150 Q120,80 210,90 Q265,95 320,60'},'Chennai-Bangalore':{d:'347 km',t:'6h',p:'M30,150 Q110,120 170,100 Q230,80 320,60'},'Mumbai-Delhi':{d:'1407 km',t:'24h',p:'M30,150 Q80,100 160,75 Q240,55 320,30'},'Bangalore-Hyderabad':{d:'574 km',t:'10h',p:'M30,150 Q130,100 200,85 Q265,70 320,60'},default:{d:'~500 km',t:'8–12h',p:'M30,150 Q120,100 210,90 Q270,80 320,60'}};
+  const k=S.src+'-'+S.dst,r=routes[k]||routes.default;
+  document.getElementById('mdist').textContent='Route: '+r.d+' · Est. '+r.t;
+  document.getElementById('msvg').innerHTML=`<svg viewBox="0 0 360 175" style="width:100%;border-radius:8px">
+    <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3z" fill="#0D9488"/></marker></defs>
+    <rect width="360" height="175" fill="#ECFDF5" rx="8"/>
+    <path d="${r.p}" stroke="#A7F3D0" stroke-width="4" fill="none" stroke-dasharray="6 3"/>
+    <path d="${r.p}" stroke="#0D9488" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+    <circle cx="30" cy="150" r="6" fill="#7C3AED"/>
+    <circle cx="320" cy="60" r="6" fill="#0D9488"/>
+    <text x="40" y="167" font-size="11" fill="#5B21B6" font-family="sans-serif" font-weight="600">${S.src}</text>
+    <text x="280" y="55" font-size="11" fill="#0F766E" font-family="sans-serif" font-weight="600">${S.dst}</text>
+  </svg>`;
+}
+
+function toPay(){
+  if(!S.seats.length){toast('Please select at least one seat','#F43F5E');return;}
+  buildPax();buildPsum();
+  document.getElementById('pbtn').textContent=S.bus.price*S.seats.length+40;
+  goTo(4);
+}
+
+function buildPax(){
+  document.getElementById('paxforms').innerHTML=S.seats.map((s,i)=>`
+    <div class="pax-block">
+      <div class="pax-title">Passenger ${i+1} — Seat ${s}</div>
+      <div class="form-2col" style="margin-bottom:8px">
+        <div><label>Full name</label><input placeholder="Full name" id="pn${i}"></div>
+        <div><label>Age</label><input type="number" placeholder="25" min="1" max="120" id="pa${i}"></div>
+      </div>
+      <label>Gender</label>
+      <select id="pg${i}"><option>Male</option><option>Female</option><option>Other</option></select>
+    </div>`).join('');
+}
+
+function buildPsum(){
+  const b=S.bus,cnt=S.seats.length,fare=b.price*cnt,tot=fare+40;
+  document.getElementById('psum').innerHTML=`
+    <div class="sum-row"><span>Bus</span><span style="font-weight:600">${b.name}</span></div>
+    <div class="sum-row"><span>Route</span><span>${S.src} → ${S.dst}</span></div>
+    <div class="sum-row"><span>Date</span><span>${S.date}</span></div>
+    <div class="sum-row"><span>Seats</span><span>${S.seats.join(', ')}</span></div>
+    <div class="sum-row"><span>Fare (${cnt} × ₹${b.price})</span><span>₹${fare}</span></div>
+    <div class="sum-row"><span>Convenience fee</span><span>₹40</span></div>
+    <div class="sum-row sum-total"><span>Total payable</span><span>₹${tot}</span></div>`;
+}
+
+function selPM(el,m){
+  document.querySelectorAll('.pm-option').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');S.pm=m;
+  const pd=document.getElementById('pmdet');
+  if(m==='card')pd.innerHTML=`<label>Card number</label><input placeholder="1234 5678 9012 3456"><div class="form-2col"><div><label>Expiry</label><input placeholder="MM/YY"></div><div><label>CVV</label><input type="password" placeholder="•••"></div></div>`;
+  else if(m==='upi')pd.innerHTML=`<label>UPI ID</label><input placeholder="yourname@upi">`;
+  else if(m==='nb')pd.innerHTML=`<label>Select bank</label><select><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra</option></select>`;
+  else pd.innerHTML='';
+}
+
+function confirm(){
+  const b=S.bus,tot=b.price*S.seats.length+40,pnr='BG'+Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('tdet').innerHTML=`
+    <div class="ticket-row"><span style="color:var(--text2)">PNR number</span><span style="font-weight:700;color:var(--brand)">${pnr}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Bus</span><span>${b.name}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Route</span><span>${S.src} → ${S.dst}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Date</span><span>${S.date}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Departure</span><span>${b.dep}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Seat(s)</span><span>${S.seats.join(', ')}</span></div>
+    <div class="ticket-row"><span style="color:var(--text2)">Payment via</span><span>${S.pm.toUpperCase()}</span></div>
+    <div class="ticket-row"><span>Amount paid</span><span>₹${tot}</span></div>`;
+  toast('Booking confirmed! PNR: '+pnr+' 🎉');goTo(5);
+}
+
+const d=new Date();d.setDate(d.getDate()+3);
+document.getElementById('jdate').value=d.toISOString().split('T')[0];
+</script>
